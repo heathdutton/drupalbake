@@ -1,0 +1,12 @@
+# For now, exclude the compiled Drupal from the repository.
+drupal
+drupal/*
+
+# Exclude PHPStorm files
+.idea
+.idea/*
+
+# Exclude Composer files
+vendor
+vendor/*
+composer.lock

@@ -1,0 +1,4 @@
+drupalbake
+==========
+
+Drupal distribution generator.
