@@ -21,8 +21,11 @@ web1:
   network_dirs:
     storage1:
       - sites/all/default/files
+      - sites/all/default/private
   httpd_document_root: drupal
   lib_dir: vendor
+  env:
+    - ENVIRONMENT: PAGODABOX
   exec:
     - "bash build.sh"
 

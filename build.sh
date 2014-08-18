@@ -22,11 +22,14 @@ fi
 echo "Running Composer (used primarally for Drush)."
 composer install --no-interaction --prefer-source
 
-echo "Building the stub make file into a new drupal folder."
-php vendor/drush/drush/drush.php make drupalbake-build.make drupal_new --force-complete --md5 --working-copy
+echo "Merging in custom code - vendor."
+cp -R custom/vendor ./
 
-echo "Inserting settings.php file to new drupal."
-cp scripts/settings.php drupal_new/sites/default/settings.php
+echo "Building the stub make file into a new drupal folder."
+php vendor/bin/drush.php make drupalbake-build.make drupal_new --force-complete --md5 --working-copy
+
+echo "Merging in custom code - drupal."
+cp -R custom/drupal ./
 
 echo "Swapping old drupal for new."
 mv drupal drupal_old
