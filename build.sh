@@ -23,13 +23,16 @@ echo "Running Composer (used primarally for Drush)."
 composer install --no-interaction --prefer-source
 
 echo "Merging in custom code - vendor."
-cp -R custom/vendor ./
+cp -R custom/vendor/ vendor/
 
 echo "Building the stub make file into a new drupal folder."
-php vendor/bin/drush.php make drupalbake-build.make drupal_new --force-complete --md5 --working-copy
+php vendor/bin/drush.php make drupalbake-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
 
 echo "Merging in custom code - drupal."
-cp -R custom/drupal ./
+cp -R custom/drupal/ drupal/
+
+echo "Moving static assets to new Drupal."
+mv drupal/sites/default/files drupal_new/sites/default/files
 
 echo "Swapping old drupal for new."
 mv drupal drupal_old
