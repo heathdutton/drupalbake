@@ -1,3 +1,12 @@
+build:
+  type: php
+  version: 5.5
+  stability: production
+  exec:
+    - bash bake.sh
+  lib_dir: vendor
+  reuse_libs: true
+
 web1:
   name: code
   type: php
@@ -11,24 +20,20 @@ web1:
   # Extend execution and input time a tiny bit
   php_max_execution_time: 60
   php_max_input_time: 60
-  php_post_max_size: "1M"
+  php_post_max_size: 1M
   # Increase input vars for permission forms
   php_max_input_vars: 10000
-  php_date_timezone: "US/east"
-  zend_extensions:
+  php_date_timezone: US/east
+  httpd_document_root: drupal
+  zend_extensions:
     # Zend Opcache is currently outperforming other options available for PHP 5.5
-    - opcache
+    - opcache
   network_dirs:
     storage1:
       - sites/all/default/files
       - sites/all/default/private
-  lib_dir:
-    - sites/all/vendor
   env:
     - ENVIRONMENT: PAGODABOX
-  exec:
-    - "bash bake.sh"
-  httpd_document_root: "drupal"
 
 database1:
   name: data
