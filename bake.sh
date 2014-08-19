@@ -31,10 +31,8 @@ then
 fi
 composer install --no-interaction --prefer-dist --no-dev
 
-php -i
-
 echo "Building the stub make file into a new drupal folder."
-php -f "./vendor/bin/drush.php" make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
+php -f drush.php make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
 
 echo "Dropping the auto-generated sites/default folder"
 rm -rf drupal_new/sites/default
