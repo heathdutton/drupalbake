@@ -4,7 +4,7 @@ build:
   stability: production
   exec:
     - bash bake.sh
-  lib_dir: none
+  lib_dir: vendor
   reuse_libs: false
 
 web1:
