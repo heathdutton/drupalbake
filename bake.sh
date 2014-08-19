@@ -20,6 +20,12 @@ if [[ $COMPOSER_IS_INSTALLED -ne 0 ]]; then
     exit 0;
 fi
 
+# Echo starting working dirrectory (for debugging deployments)
+
+CWD=$(pwd)
+# Print it.
+printf "Working from directory: %s\n" ${CWD}
+
 echo "Running Composer (used primarally for Drush)."
 if [ -e "composer.lock" ]
 then
