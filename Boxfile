@@ -2,7 +2,7 @@ build:
   type: php
   version: 5.5
   stability: production
-  after_exec:
+  exec:
     - bash bake.sh
   lib_dir: vendor
   reuse_libs: true

@@ -25,7 +25,7 @@ CWD=$(pwd)
 printf "Working from directory: %s\n" ${CWD}
 
 echo "Folder contents: "
-cs vendor
+cd vendor
 ls
 
 echo "Running Composer (used primarally for Drush)."
