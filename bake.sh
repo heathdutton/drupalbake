@@ -21,10 +21,11 @@ if [[ $COMPOSER_IS_INSTALLED -ne 0 ]]; then
 fi
 
 # Echo starting working dirrectory (for debugging deployments)
-
 CWD=$(pwd)
-# Print it.
 printf "Working from directory: %s\n" ${CWD}
+
+echo "Folder contents: "
+li
 
 echo "Running Composer (used primarally for Drush)."
 if [ -e "composer.lock" ]
@@ -34,7 +35,7 @@ fi
 composer install --no-interaction --prefer-dist --no-dev
 
 echo "Building the stub make file into a new drupal folder."
-drush make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
+php vendor/bin/drush.php make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
 
 echo "Dropping the auto-generated sites/default folder"
 rm -rf drupal_new/sites/default
