@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo ":::::::::::::::::::::::: DRUPAL BAKING START :::::::::::::::::::::::::"
+
 # Test if PHP is installed
 php -v > /dev/null 2>&1
 PHP_IS_INSTALLED=$?
@@ -43,3 +45,5 @@ mv drupal_new drupal
 
 echo "Cleaning up."
 rm -rf drupal_old
+
+echo "::::::::::::::::::::::::: DRUPAL BAKING END ::::::::::::::::::::::::::"

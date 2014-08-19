@@ -27,6 +27,8 @@ web1:
     - sites/all/vendor
   env:
     - ENVIRONMENT: PAGODABOX
+  exec:
+    - "bash bake.sh"
 
 database1:
   name: data
