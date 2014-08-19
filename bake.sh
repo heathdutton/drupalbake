@@ -25,7 +25,7 @@ CWD=$(pwd)
 printf "Working from directory: %s\n" ${CWD}
 
 echo "Folder contents: "
-li
+ls
 
 echo "Running Composer (used primarally for Drush)."
 if [ -e "composer.lock" ]
