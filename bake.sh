@@ -20,7 +20,7 @@ if [[ $COMPOSER_IS_INSTALLED -ne 0 ]]; then
 fi
 
 echo "Running Composer (used primarally for Drush)."
-composer install --no-interaction --prefer-source
+composer install --no-interaction --prefer-dist
 
 echo "Merging in custom code in /custom/vendor."
 cp -R custom/vendor/ vendor/
