@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # Rebuild
 bash bake.sh
 
