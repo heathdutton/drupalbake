@@ -4,8 +4,8 @@ build:
   stability: production
   exec:
     - bash bake.sh
-  lib_dir: vendor
-  reuse_libs: true
+  lib_dir: none
+  reuse_libs: false
 
 web1:
   name: code
