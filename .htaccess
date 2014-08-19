@@ -1,0 +1,8 @@
+# Ensure that this folder is not the docroot
+Options -Indexes
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !/index.html
+    RewriteRule (.*) /index.html [L]
+</IfModule>

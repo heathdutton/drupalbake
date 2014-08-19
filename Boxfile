@@ -12,22 +12,21 @@ web1:
   php_max_execution_time: 60
   php_max_input_time: 60
   php_post_max_size: "1M"
-  # Increase input vars for our massive forms
-  php_max_input_vars: 5000
+  # Increase input vars for Drupal's massive permission forms
+  php_max_input_vars: 10000
   php_date_timezone: "US/east"
   zend_extensions:
-    # Currently outperforming other options for PHP 5.5
+    # Zend Opcache is currently outperforming other options available for PHP 5.5
     - opcache
   network_dirs:
     storage1:
       - sites/all/default/files
       - sites/all/default/private
   httpd_document_root: drupal
-  lib_dir: vendor
+  lib_dir:
+    - sites/all/vendor
   env:
     - ENVIRONMENT: PAGODABOX
-  exec:
-    - "bash build.sh"
 
 database1:
   name: data
