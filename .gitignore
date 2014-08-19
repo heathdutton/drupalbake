@@ -3,4 +3,6 @@ drupal
 
 # Exclude Composer files
 composer.lock
-composer.phar
+
+# Exclude node modules for gulp
+node_modules
