@@ -32,7 +32,7 @@ fi
 composer install --no-interaction --prefer-dist --no-dev
 
 echo "Building the stub make file into a new drupal folder."
-chmod 755 vendor/bin/drush.php
+#chmod 755 vendor/bin/drush.php
 php -f vendor/bin/drush.php make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
 
 echo "Dropping the auto-generated sites/default folder"
