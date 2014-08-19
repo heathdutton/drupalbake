@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 echo "Refreshing build"
-bash build.sh
+bash bake.sh
 
-echo "Waiting for changes"
-
+echo "Waiting for changes..."
 daemon() {
     previouscheck=`find custom -type f -mtime -5s -exec md5 {} \;`
     while [[ true ]]
