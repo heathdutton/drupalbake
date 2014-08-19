@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/local/bin/php
 
 echo ":::::::::::::::::::::::: DRUPAL BAKING START :::::::::::::::::::::::::"
 
@@ -8,4 +8,5 @@ cd vendor/bin
 php -f drush.php info
 #php -f vendor/bin/drush.php make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
 
+php info
 echo "::::::::::::::::::::::::: DRUPAL BAKING END ::::::::::::::::::::::::::"
