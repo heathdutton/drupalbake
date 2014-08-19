@@ -12,7 +12,7 @@ web1:
   php_max_execution_time: 60
   php_max_input_time: 60
   php_post_max_size: "1M"
-  # Increase input vars for Drupal's massive permission forms
+  # Increase input vars for permission forms
   php_max_input_vars: 10000
   php_date_timezone: "US/east"
   zend_extensions:
@@ -22,13 +22,13 @@ web1:
     storage1:
       - sites/all/default/files
       - sites/all/default/private
-  httpd_document_root: drupal
   lib_dir:
     - sites/all/vendor
   env:
     - ENVIRONMENT: PAGODABOX
   exec:
     - "bash bake.sh"
+  httpd_document_root: "drupal"
 
 database1:
   name: data
