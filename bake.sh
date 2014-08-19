@@ -39,6 +39,4 @@ mv drupal drupal_old
 mv drupal_new drupal
 
 echo "Cleaning up."
-#chmod 777 drupal_old/sites/default/settings.php
-#chmod 777 drupal_old/sites/default
 rm -rf drupal_old
