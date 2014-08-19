@@ -55,12 +55,6 @@ projects[bootstrap][subdir] = "contrib"
 ; libraries[drush][download][url] = "https://github.com/drush-ops/drush.git"
 ; libraries[drush][download][branch] = "6.x"
 
-; Drupal.org drush - Adds features so that this can be a big-boy distro (if applicable in future)
-; libraries[drupalorg_drush][download][type] = "git"
-; libraries[drupalorg_drush][download][url] = "http://git.drupal.org/project/drupalorg_drush.git"
-; libraries[drupalorg_drush][download][branch] = "7.x-1.x"
-; libraries[drupalorg_drush][destination] = "libraries/drush/commands"
-
 ; Isotope library - For Views Isotope
 libraries[isotope][download][type] = "git"
 libraries[isotope][download][url] = "https://github.com/metafizzy/isotope.git"

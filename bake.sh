@@ -5,7 +5,7 @@ php -v > /dev/null 2>&1
 PHP_IS_INSTALLED=$?
 
 if [[ $PHP_IS_INSTALLED -ne 0 ]]; then
-    echo "PHP is required to build drupalbake."
+    echo "PHP is required to bake."
     exit 0;
 fi
 
@@ -14,22 +14,25 @@ composer -v > /dev/null 2>&1
 COMPOSER_IS_INSTALLED=$?
 
 if [[ $COMPOSER_IS_INSTALLED -ne 0 ]]; then
-    echo "Installing Composer (your password will be required)"
-    curl -sS https://getcomposer.org/installer | php
-    sudo mv composer.phar /usr/local/bin/composer
+    echo "Composer is required to bake."
+    exit 0;
 fi
 
 echo "Running Composer (used primarally for Drush)."
-composer install --no-interaction --prefer-dist
-
-echo "Merging in custom code in /custom/vendor."
-cp -R custom/vendor/ vendor/
+if [ -e "composer.lock" ]
+then
+  composer update --lock
+fi
+composer install --no-interaction --prefer-dist --no-dev
 
 echo "Building the stub make file into a new drupal folder."
-php vendor/bin/drush.php make drupalbake-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
+php vendor/bin/drush.php make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
+
+echo "Dropping the auto-generated sites/default folder"
+rm -rf drupal_new/sites/default
 
 echo "Merging in custom code in /custom/drupal."
-cp -R custom/drupal/ drupal_new/
+cp -R custom/ drupal_new/
 
 echo "Moving static assets and settings to new Drupal."
 mv drupal/sites/default drupal_new/sites/default

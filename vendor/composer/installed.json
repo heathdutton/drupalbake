@@ -66,17 +66,5 @@
         ],
         "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
         "homepage": "http://www.drush.org"
-    },
-    {
-        "name": "drush/drush/commands/drupalorg_drush",
-        "version": "7",
-        "version_normalized": "7.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "http://git.drupal.org/project/drupalorg_drush.git",
-            "reference": "7.x-1.x"
-        },
-        "type": "library",
-        "installation-source": "source"
     }
 ]

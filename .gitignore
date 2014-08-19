@@ -1,8 +1,20 @@
 # Exclude drupal
 drupal
 
+# Exclude vendor
+vendor
+
+# Exclude distribution (not for future projects)
+bake-dist.zip
+
 # Exclude Composer files
 composer.lock
 
 # Exclude node modules for gulp
 node_modules
+
+# Exclude any extracted distribution
+bake-dist
+
+# Exclude PHPStorm projects
+.idea

@@ -58,8 +58,8 @@ function merge_drush_command() {
       'description' => 'Optionally define a description of the resulting installation profile. Defaults to a combination of descriptions.',
       'exclusive' => 'Set to "false" to allow other installation profiles to be used. Default: "true"',
       'force' => 'Set to "false" to prevent overwrite of an existing merged profile of the same name. Default: "true"',
-      'include' => 'Optionally list the profiles you want to merge (by machine name). Useful to merge in a particular order.',
-      'exclude' => 'Optionally define a list of profiles to ignore (comma delimited). Default: "standard,minimal,testing"',
+      'profiles-included' => 'Optionally list the profiles you want to merge (by machine name). Useful to merge in a particular order.',
+      'profiles-excluded' => 'Optionally define a list of profiles to ignore (comma delimited). Default: "standard,minimal,testing"',
       'cleanup' => 'Optionally remove all other installation profiles to save space. Default: "false"'
     ),
     'examples' => array(
@@ -100,8 +100,8 @@ function drush_merge() {
     'description' => MERGE_DEFAULT_DESCRIPTION,
     'exclusive' => MERGE_DEFAULT_EXCLUSIVE,
     'overwrite' => MERGE_DEFAULT_OVERWRITE,
-    'exclude' => MERGE_DEFAULT_EXCLUDE,
-    'include' => MERGE_DEFAULT_INCLUDE,
+    'profiles-excluded' => MERGE_DEFAULT_EXCLUDE,
+    'profiles-included' => MERGE_DEFAULT_INCLUDE,
     'cleanup' => MERGE_DEFAULT_CLEANUP
   );
 
@@ -122,7 +122,7 @@ function drush_merge() {
       $machine_name = _merge_machine_name($options['name']);
 
       // Determine which profiles should be included
-      $profiles_to_include = explode(',', $options['include']);
+      $profiles_to_include = explode(',', $options['profiles-included']);
 
       // Prevent a merge profile from including itself, to prevent recursion
       $profiles_to_include = array_diff($profiles_to_include, array(
@@ -131,7 +131,7 @@ function drush_merge() {
       ));
 
       // Determine which profiles should be excluded
-      $profiles_to_exclude = explode(',', $options['exclude']);
+      $profiles_to_exclude = explode(',', $options['profiles-excluded']);
 
       // If the merged profile already exists, ignore it to prevent recursion
       $profiles_to_exclude[] = $machine_name;
@@ -206,17 +206,16 @@ function drush_merge() {
           include_once $base_path . '/includes/common.inc';
 
           // Loop through profiles, collecting projects
-          $modules = array();
-          $themes = array();
-          $installs = array();
-          $infos = array();
-          $translations = array();
-          $licenses = array();
-          $readmes = array();
+          $modules =
+            $themes =
+            $installs =
+            $infos =
+            $translations =
+            $licenses =
+            $readmes =
+            $libraries = array();
           foreach ($profiles as $profile_name => $profile) {
             // Recursively copy files, ignoring files at the root of the profile
-            $new_modules = array();
-            $new_themes = array();
 
             // Find new modules
             $profile_path = $base_path . '/profiles/' . $profile_name;
@@ -245,6 +244,15 @@ function drush_merge() {
                 array('.', '..', 'CVS', 'tests'), 0, 2);
               if ($new_translations) {
                 $translations = array_merge($translations, $new_translations);
+              }
+            }
+
+            // Find any/all library files to merge
+            // Dangerously nondeterministic!
+            if (is_dir($profile_path . '/libraries')) {
+              $new_libraries = _merge_get_subdirs($profile_path . '/libraries');
+              if ($new_libraries) {
+                $libraries = array_merge($libraries, $new_libraries);
               }
             }
 
@@ -287,15 +295,21 @@ function drush_merge() {
 
           // Merge modules
           _merge_copy_bulk($modules, $base_path, $new_profile_tmp_dir, 'modules');
-
           // Merge themes
           _merge_copy_bulk($themes, $base_path, $new_profile_tmp_dir, 'themes');
 
           // Merge translations
           _merge_copy_bulk($translations, $base_path, $new_profile_tmp_dir, 'translations');
 
+          // Merge libraries
+          _merge_copy_bulk($libraries, $base_path, $new_profile_tmp_dir, 'libraries');
+
           // Merge .info files
-          _merge_info_syntax($infos, $new_profile_tmp_dir, $options['name']);
+          _merge_info_syntax($infos, $new_profile_tmp_dir, $options['name'], $machine_name);
+
+
+          // TO DO +++==================================
+
 
           // Merge .profile files
 
@@ -365,24 +379,120 @@ function drush_merge() {
 }
 
 /**
+ * Get a list of subdirectories.
+ * Used for aggregating libraries safely.
+ *
+ * @param $dir
+ */
+function _merge_get_subdirs($dir){
+  $subdirs = array();
+  if (is_string($dir) && is_dir($dir) && $handle = opendir($dir)) {
+    while (FALSE !== ($subdir = readdir($handle))) {
+      if ($subdir != '..' && $subdir != '.' && is_dir($dir . '/' . $subdir)){
+        $subdirs[$subdir] = new stdClass();
+        $subdirs[$subdir]->name = $subdir;
+        $subdirs[$subdir]->filename = $dir . '/' . $subdir;
+      }
+    }
+  }
+  return $subdirs;
+}
+
+/**
  * Parse an array of info-syntax files and save the result
  *
  * @param $items
- * @param $destination
+ * @param $destination_folder
  * @param $new_profile_name
+ * @param $machine_name
  */
-function _merge_info_syntax($items, $destination, $new_profile_name){
+function _merge_info_syntax($items, $destination_folder, $new_profile_name, $machine_name){
   $info = array();
-  $names = array();
-  $description = dt('This was automatically merged from: ') . "\n";
+
+  $descriptions = array();
+  $core = drush_drupal_major_version();
+  // Some values should be excluded from the merge (using blacklist for futureproofness)
+  $excluded_keys = array('name', 'description', 'version', 'core', 'version', 'core', 'project', 'datestamp');
   foreach ($items as $item){
+
+    // Parse the file
     $new_info = drush_drupal_parse_info_file($item->filename);
-    if (isset($new_info['name'])) {
-      $description .= $new_info['name'] . ' ';
+
+    // Collect the name and desription for later use as a concatenated description
+    $descriptions[] = $new_info['name'] . (isset($new_info['description']) ? ' (' . $new_info['description'] . ')' : '');
+
+    // Get core value and ensure we are consistent with this Drupal core
+    if (isset($new_info['core'])){
+      $item_core = trim(str_replace(array('.', 'x', 'X', '*'), '', $new_info['core']));
+      if ($item_core && $item_core != $core){
+        drush_set_error(
+          'MERGE_CORE_CONFLICT',
+          dt('An item is not @version compatible: @item', array(
+            '@version' => $core,
+            '@file' => (isset($new_info['name']) ? $new_info['name'] : $item->basename)
+          ))
+        );
+      }
     }
-    $info = array_merge_recursive($info, $new_info);
+
+    // Exclude bits that we don't need before recursive merge
+    foreach ($excluded_keys as $key){
+      if (isset($new_info[$key])) {
+        unset($new_info[$key]);
+      }
+    }
+
+    // Correct files, if they are looking for a file that is profile specific in name
+    if (isset($new_info['files'])){
+      foreach ($new_info['files'] as &$file_name){
+        $segments = explode('.', $file_name);
+        if ($segments && $segments[0] == $item->name){
+          // Redirect to a new equivalent of this file, assuming the merge will create it
+          $segments[0] = $machine_name;
+          $file_name = implode('.', $segments);
+        }
+      }
+    }
+
+    // Merge the remaining data into the info array if applicable
+    if (count($new_info)){
+      $info = array_merge_recursive($info, $new_info);
+    }
   }
-  die(print_r($info));
+  // Finally, generate the singular values
+  $top_info = array();
+  $top_info['name'] = $new_profile_name;
+  $top_info['description'] = dt('This is a merged profile, generated from: ') . implode(", ", $descriptions);
+  $top_info['project'] = $machine_name;
+  $top_info['core'] = $core . '.x';
+
+  // And make sure those values are at the top as they should be
+  $info = array_merge($top_info, $info);
+
+  // Save the info file to it's destination
+  $info_string = _merge_info_generate($info);
+
+  file_put_contents($destination_folder . '/' . $machine_name . '.info', $info_string);
+}
+
+function _merge_info_generate($info, $prefix = ''){
+  $result = '';
+  foreach ($info as $key => $value) {
+    if (is_array($value)){
+      // @todo - Remove duplicate project/lib/file dependencies for performance & clarity
+      $result .= _merge_info_generate($value, $key);
+    }
+    else {
+      if (is_numeric($key)) {
+        $key = '';
+      }
+      if ($prefix){
+        $key = '[' . $key . ']';
+      }
+      $result .= $prefix . $key . ' = ' . $value . "\n";
+    }
+  }
+  return $result;
 }
 
 
@@ -402,7 +512,7 @@ function _merge_copy_bulk($items, $base_path, $destination_root, $type){
         // For modules/themes we want to copy the root of the path,
         // which is where the .module/.theme file lives
         $path_segments = explode('/', $item->filename);
-        // Remove the .module file from the path
+        // Remove the extension from the path
         array_pop($path_segments);
         // Make the path literal
         $relative_source = implode('/', $path_segments);
@@ -413,6 +523,7 @@ function _merge_copy_bulk($items, $base_path, $destination_root, $type){
         );
       }
       break;
+    case 'libraries':
     case 'translations':
       foreach ($items as $item){
         // For these, they are straight file-copies,
@@ -423,8 +534,6 @@ function _merge_copy_bulk($items, $base_path, $destination_root, $type){
         array_shift($path_segments);
         $relative_source = implode('/', $path_segments);
 
-        // $relative_source = str_replace($path_segments[0] . '/', '', $item->filename);
-        // $relative_destination = str_replace($path_segments[2] . '/' . $path_segments[2] . '/', '', $relative_source);
         $paths[$item->name] = array(
           'source' => $item->filename,
           'destination' => $destination_root . '/' . $relative_source
