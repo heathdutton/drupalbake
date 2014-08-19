@@ -3,6 +3,8 @@ drupal
 
 # Exclude vendor
 vendor
+vendor/autoload.php
+vendor/composer/autoload_real.php
 
 # Exclude distribution (not for future projects)
 bake-dist.zip
@@ -15,6 +17,10 @@ node_modules
 
 # Exclude any extracted distribution
 bake-dist
+
+# Exclude broken builds
+drupal_new
+drupal_old
 
 # Exclude PHPStorm projects
 .idea
