@@ -27,7 +27,7 @@ web1:
   httpd_document_root: drupal
   zend_extensions:
     # Zend Opcache is currently outperforming other options available for PHP 5.5
-    - opcache
+    # - opcache
   network_dirs:
     storage1:
       - sites/all/default/files
