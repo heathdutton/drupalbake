@@ -19,3 +19,6 @@ drupal_old
 
 # Exclude PHPStorm projects
 .idea
+
+# Exclude temporary drush folder
+drush
