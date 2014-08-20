@@ -5,7 +5,7 @@ build:
   exec:
     - bash bake.sh
   lib_dir: vendor
-  reuse_libs: true
+  reuse_libs: false
 
 web1:
   name: code
