@@ -1,16 +1,11 @@
 # Exclude drupal
 drupal
 
-# Exclude vendor
+# Exclude Composer /vendor folder
 vendor
-vendor/autoload.php
-vendor/composer/autoload_real.php
 
 # Exclude distribution (not for future projects)
 bake-dist.zip
-
-# Exclude Composer files
-composer.lock
 
 # Exclude node modules for gulp
 node_modules
