@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function bakery_install() {
+    // set the default theme
+    $theme = 'bootstrap';
+    theme_enable(array($theme));
+    variable_set('theme_default', $theme);
+    theme_disable(array('responsive_bartik', 'bartik'));
+}

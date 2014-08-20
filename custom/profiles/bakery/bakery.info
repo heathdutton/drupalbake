@@ -1,0 +1,36 @@
+name = Bakery
+description = This installation profile would typically be used for drupalbakery.com, you likely don't need it.
+exclusive = TRUE
+version = 7.x-1.0
+core = 7.x
+
+; Standard modules
+dependencies[] = block
+dependencies[] = color
+dependencies[] = comment
+dependencies[] = contextual
+dependencies[] = dashboard
+dependencies[] = help
+dependencies[] = image
+dependencies[] = list
+dependencies[] = menu
+dependencies[] = number
+dependencies[] = options
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = dblog
+dependencies[] = search
+dependencies[] = field_ui
+dependencies[] = file
+
+; Bakery-specific modules
+dependencies[] = jquery_update
+dependencies[] = views
+dependencies[] = views_isotope
+dependencies[] = queue_ui
+dependencies[] = elysia_cron
+dependencies[] = features
+dependencies[] = feed_import
+
+; Custom modules
+dependencies[] = bakery_importer
