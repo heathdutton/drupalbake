@@ -18,6 +18,7 @@ web1:
     - mysql
     - curl
     - zip
+    - tar
   # Extend execution and input time a tiny bit
   php_max_execution_time: 60
   php_max_input_time: 60
