@@ -17,6 +17,7 @@ web1:
     - bz2
     - mysql
     - curl
+    - zip
   # Extend execution and input time a tiny bit
   php_max_execution_time: 60
   php_max_input_time: 60
