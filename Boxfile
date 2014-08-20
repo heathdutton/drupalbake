@@ -2,10 +2,10 @@ build:
   type: php
   version: 5.5
   stability: production
-  exec:
-    - bash bake.sh
+  # exec:
+  #   - bash bake.sh
   lib_dir: vendor
-  reuse_libs: false
+  reuse_libs: true
 
 web1:
   name: code
