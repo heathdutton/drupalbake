@@ -53,6 +53,9 @@ cp -R custom/ drupal_new/
 echo "Moving static assets and settings to new Drupal."
 mv drupal/sites/default drupal_new/sites
 
+echo "Merging in again (for Pagodabox)"
+cp -R custom/ drupal_new/
+
 echo "Swapping old drupal for new."
 mv drupal drupal_old
 mv drupal_new drupal
