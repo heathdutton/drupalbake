@@ -1,19 +1,5 @@
 {
-  "repositories": [
-    {
-      "type": "package",
-      "package": {
-        "name": "drush/drush/commands/drupalorg_drush",
-        "version": "7",
-        "source": {
-          "url": "http://git.drupal.org/project/drupalorg_drush.git",
-          "type": "git",
-          "reference": "7.x-1.x"
-        }
-      }
+    "require": {
+        "drush/drush": "6.3.0"
     }
-  ],
-  "require": {
-    "drush/drush": "6.3.0"
-  }
 }
