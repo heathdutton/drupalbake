@@ -10,7 +10,7 @@ build:
 web1:
   name: code
   type: php
-  version: 5.5
+  version: 5.5 
   stability: production
   # Only the bare minimum extensions
   php_extensions:

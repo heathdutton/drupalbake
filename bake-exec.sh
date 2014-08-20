@@ -23,7 +23,7 @@ echo "Ensuring we have drush globally."
 composer global require drush/drush:6.3.0
 
 echo "Building the stub make file into a new drupal folder."
-bash ~/.composer/vendor/bin/drush make bakery-stub.make drupal --force-complete --md5 --working-copy --prepare-install
+bash ~/.composer/vendor/bin/drush make bakery-stub.make drupal --force-complete --working-copy --prepare-install
 
 echo "Merging in custom code in /custom/drupal."
 cp -R custom/ drupal/
