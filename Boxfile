@@ -35,8 +35,7 @@ web1:
       - opcache
   network_dirs:
     storage1:
-      - drupal/sites/default/files
-      - drupal/sites/default/private
+      - drupal/sites/default
   env:
     - ENVIRONMENT: PAGODABOX
 
