@@ -24,16 +24,20 @@ fi
 CWD=$(pwd)
 printf "Working from directory: %s\n" ${CWD}
 
-\echo "Running Composer (used primarally for Drush)."
-if [ -e "composer.lock" ]
+if [ -e "composer.json" ]
 then
-  composer update --lock
-fi
-composer install --no-interaction --prefer-dist --no-dev
+    echo "Updating local composer."
 
-# With Pagodabox we do not have adirect access to the vendor folder binaries
-# A short-term solution is to copy things out into another folder
-# cp -R vendor/drush/drush drush
+    if [ -e "composer.lock" ]
+    then
+      composer update --lock
+    fi
+    composer install --no-interaction --prefer-dist --no-dev
+
+fi
+
+# Drush needs to be installed Globally, because it contains binaries
+echo "Ensuring we have drush globally."
 composer global require drush/drush:6.3.0
 
 echo "Building the stub make file into a new drupal folder."

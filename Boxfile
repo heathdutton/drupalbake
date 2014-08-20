@@ -19,6 +19,9 @@ web1:
     - curl
     - zip
     - tar
+    - gd
+    - pdo
+    - pdo_mysql
   # Extend execution and input time a tiny bit
   php_max_execution_time: 60
   php_max_input_time: 60
@@ -29,11 +32,11 @@ web1:
   httpd_document_root: drupal
   zend_extensions:
     # Zend Opcache is currently outperforming other options available for PHP 5.5
-    # - opcache
+      - opcache
   network_dirs:
     storage1:
-      - sites/all/default/files
-      - sites/all/default/private
+      - sites/default/files
+      - sites/default/private
   env:
     - ENVIRONMENT: PAGODABOX
 
