@@ -44,8 +44,8 @@ echo "Building the stub make file into a new drupal folder."
 rm -rf drupal_new
 bash ~/.composer/vendor/bin/drush make bakery-stub.make drupal_new --force-complete --md5 --working-copy --prepare-install
 
-echo "Dropping the auto-generated sites/default folder"
-rm -rf drupal_new/sites/default
+# echo "Dropping the auto-generated sites/default folder"
+# rm -rf drupal_new/sites/default
 
 echo "Merging in custom code in /custom/drupal."
 cp -R custom/ drupal_new/
