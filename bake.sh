@@ -51,7 +51,7 @@ echo "Merging in custom code in /custom/drupal."
 cp -R custom/ drupal_new/
 
 echo "Moving static assets and settings to new Drupal."
-mv drupal/sites/default drupal_new/sites/default
+mv drupal/sites/default drupal_new/sites
 
 echo "Swapping old drupal for new."
 mv drupal drupal_old
